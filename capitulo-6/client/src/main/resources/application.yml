@@ -6,9 +6,9 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost/clientapp
-    username: clientapp
-    password: 123
+    url: jdbc:mysql://localhost/bookserver
+    username: bookserver
+    password: 1234
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     properties:
@@ -16,4 +16,4 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         show_sql: true
         hbm2ddl:
-          auto: validate
+          auto: update
