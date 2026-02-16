@@ -28,6 +28,8 @@ public class ConfiguracaoDeSeguranca {
 					.permitAll()
 					.loginPage("/login")
 					.and()
+                                .httpBasic()
+                                    .and()
 				.logout()
 					.permitAll()
 					.and()
