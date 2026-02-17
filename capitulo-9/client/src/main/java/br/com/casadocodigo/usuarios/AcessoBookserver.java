@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 public class AcessoBookserver {
 
     @Getter @Setter
-    @Column(name = "token_bookserver")
+    @Column(name = "token_bookserver", length = 60)
     private String acessoToken;
 
 }
