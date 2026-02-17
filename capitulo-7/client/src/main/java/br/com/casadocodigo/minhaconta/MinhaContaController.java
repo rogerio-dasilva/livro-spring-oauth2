@@ -27,16 +27,17 @@ public class MinhaContaController {
     public ModelAndView principal() {
 
         Usuario usuario = usuarioLogado();
-        String login = usuario.getAcessoBookserver().getLogin();
-        String senha = usuario.getAcessoBookserver().getSenha();
+//        String login = usuario.getAcessoBookserver().getLogin();
+//        String senha = usuario.getAcessoBookserver().getSenha();
+        String token = usuario.getAcessoBookserver().getAcessToken();
 
         ModelAndView mv = new ModelAndView("minhaconta/principal");
 
-        BasicAuthentication credenciais =
-                new BasicAuthentication(login, senha);
+//        BasicAuthentication credenciais =
+//                new BasicAuthentication(login, senha);
 
         try {
-            mv.addObject("livros", bookserverService.livros(credenciais));
+            mv.addObject("livros", bookserverService.livros(token));
         } catch (UsuarioSemAutorizacaoException e) {
             mv.addObject("erro", e.getMessage());
         }

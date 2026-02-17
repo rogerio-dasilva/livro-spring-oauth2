@@ -1,6 +1,8 @@
 package br.com.casadocodigo.minhaconta;
 
 import br.com.casadocodigo.configuracao.seguranca.UsuarioLogado;
+import br.com.casadocodigo.integracao.bookserver.OAuth2Token;
+import br.com.casadocodigo.integracao.bookserver.PasswordTokenService;
 import br.com.casadocodigo.usuarios.AcessoBookserver;
 import br.com.casadocodigo.usuarios.Usuario;
 import br.com.casadocodigo.usuarios.UsuariosRepository;
@@ -18,6 +20,9 @@ public class IntegracaoController {
 
     @Autowired
     private UsuariosRepository usuarios;
+    
+    @Autowired
+    private PasswordTokenService passwordTokenService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView integracao() {
@@ -27,11 +32,14 @@ public class IntegracaoController {
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView autorizar(Autorizacao autorizacao) {
 
-        AcessoBookserver acessoBookserver = new AcessoBookserver();
-        acessoBookserver.setLogin(autorizacao.getLogin());
-        acessoBookserver.setSenha(autorizacao.getSenha());
+//        acessoBookserver.setLogin(autorizacao.getLogin());
+//        acessoBookserver.setSenha(autorizacao.getSenha());
 
         Usuario usuario = usuarioLogado();
+        OAuth2Token token = passwordTokenService.getToken(autorizacao.getLogin(), autorizacao.getSenha());
+        AcessoBookserver acessoBookserver = new AcessoBookserver();
+        acessoBookserver.setAcessToken(token.getAccessToken());
+        
         usuario.setAcessoBookserver(acessoBookserver);
 
         usuarios.save(usuario);

@@ -18,5 +18,9 @@ public class AcessoBookserver {
     @Getter @Setter
     @Column(name = "senha_bookserver")
     private String senha;
+    
+    @Getter @Setter
+    @Column(name = "token_bookserver", length = 60)
+    private String acessToken;
 
 }

@@ -19,13 +19,13 @@ import br.com.casadocodigo.integracao.model.Livro;
 @Service
 public class BookserverService {
 
-    public List<Livro> livros(BasicAuthentication credenciais) throws UsuarioSemAutorizacaoException {
+    public List<Livro> livros(String token) throws UsuarioSemAutorizacaoException {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Authorization", "Basic " + credenciais.getCredenciaisBase64());
+        headers.add("Authorization", "Bearer " + token);
 
-        String endpoint = "http://localhost:8080/api/livros";
+        String endpoint = "http://localhost:8080/api/v2/livros";
 
         RequestEntity<Object> request = new RequestEntity<Object>(
             headers,

@@ -12,6 +12,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.casadocodigo.configuracao.seguranca.BasicAuthentication;
+import java.util.Arrays;
+import org.springframework.http.MediaType;
 
 @Service
 public class PasswordTokenService {
@@ -43,12 +45,19 @@ public class PasswordTokenService {
     private MultiValueMap<String, String> getBody(String loginDoUsuario, String senhaDoUsuario) {
         MultiValueMap<String, String> dadosFormulario = new LinkedMultiValueMap<>();
 
+        dadosFormulario.add("grant_type", "password");
+        dadosFormulario.add("username", loginDoUsuario);
+        dadosFormulario.add("password", senhaDoUsuario);
+        dadosFormulario.add("scope", "read write");
         return dadosFormulario;
     }
 
     private HttpHeaders getHeader(BasicAuthentication clientAuthentication) {
         HttpHeaders httpHeaders = new HttpHeaders();
 
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        httpHeaders.add("Authorization", "Basic " + clientAuthentication.getCredenciaisBase64());
         return httpHeaders;
     }
 }
