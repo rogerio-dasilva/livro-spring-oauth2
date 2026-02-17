@@ -12,7 +12,7 @@ $(function() {
 
                 $(data).each(function(index, livro) {
 
-                    var $div = $('<div></div>');
+                    var $div = $('<div class="col-sm-12"></div>');
                     $div.text(livro.titulo);
                     callback($div);
 
