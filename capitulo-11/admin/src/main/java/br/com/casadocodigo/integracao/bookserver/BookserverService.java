@@ -1,9 +1,13 @@
 package br.com.casadocodigo.integracao.bookserver;
 
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,7 +18,16 @@ public class BookserverService {
     private ClientCredentialsTokenService clientCredentialsTokenService;
 
     public long getQuantidadeDeLivrosCadastrados() {
-        return 0L;
+        String token = clientCredentialsTokenService.getToken().getAccessToken();
+        
+        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
+        headers.add("Authorization", "Bearer " + token);
+        
+        String endPoint = "http://localhost:8080/api/v2/admin/total_livros";
+        
+        RequestEntity<Object> request = new RequestEntity<>(headers, HttpMethod.GET, URI.create(endPoint));
+        
+        return sendRequest(request);
     }
 
     private long sendRequest(RequestEntity<Object> request) {

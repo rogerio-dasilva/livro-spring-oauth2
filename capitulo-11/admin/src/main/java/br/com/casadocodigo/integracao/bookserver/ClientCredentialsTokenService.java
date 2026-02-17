@@ -45,7 +45,8 @@ public class ClientCredentialsTokenService {
     private MultiValueMap<String, String> getBody() {
         MultiValueMap<String, String> dadosFormulario = new LinkedMultiValueMap<>();
 
-        // configurar os parametros para solicitar o token
+        dadosFormulario.add("grant_type", "client_credentials");
+        dadosFormulario.add("scope", "read");
 
         return dadosFormulario;
     }
