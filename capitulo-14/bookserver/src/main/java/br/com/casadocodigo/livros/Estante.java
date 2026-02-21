@@ -17,7 +17,9 @@ import javax.persistence.OneToMany;
 
 import lombok.Getter;
 import br.com.casadocodigo.usuarios.Usuario;
+import javax.persistence.Table;
 
+@Table(schema = "bookserver")
 @Entity
 public class Estante implements Serializable {
 	private static final long serialVersionUID = 1L;

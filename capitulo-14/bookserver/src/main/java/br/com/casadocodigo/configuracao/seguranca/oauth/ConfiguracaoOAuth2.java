@@ -1,7 +1,10 @@
 package br.com.casadocodigo.configuracao.seguranca.oauth;
 
 import br.com.casadocodigo.configuracao.seguranca.DadosDoUsuarioService;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,7 +16,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 @Configuration
 public class ConfiguracaoOAuth2 {
@@ -34,7 +41,8 @@ public class ConfiguracaoOAuth2 {
                 .authorizeRequests()
                     .anyRequest().authenticated().and()
                 .requestMatchers()
-                    .antMatchers("/api/v2/**");
+                    .antMatchers("/api/v2/**").and()
+                    .cors();
         }
     }
 
@@ -50,6 +58,19 @@ public class ConfiguracaoOAuth2 {
 
         @Autowired
         private DadosDoUsuarioService userDetailsService;
+        
+        @Autowired @Qualifier("dsOauth")
+        private DataSource dataSource;
+        
+        @Bean
+        public TokenStore tokenStore(){
+            return new JdbcTokenStore(dataSource);
+        }
+        
+        @Bean
+        public ApprovalStore approvalStore(){
+            return new JdbcApprovalStore(dataSource);
+        }
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -60,36 +81,49 @@ public class ConfiguracaoOAuth2 {
             endpoints
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
-                .requestFactory(requestFactory);
+                .requestFactory(requestFactory)
+                .tokenStore(tokenStore())
+                .approvalStore(approvalStore());
             // @formatter:on
         }
+        
+        private boolean useJdbc = true;
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            clients.inMemory()
-                .withClient("cliente-app")
-                .secret("123456")
-                .scopes("read", "write")
-                .resourceIds(RESOURCE_ID)
-                .authorities("read", "write")
-                .authorizedGrantTypes(
-                    "password",
-                    "authorization_code",
-                    "refresh_token")
-                .accessTokenValiditySeconds(120)
+            if(useJdbc){
+                clients.jdbc(dataSource);
+            } else {
+                clients.inMemory()
+                    .withClient("cliente-app")
+                    .secret("123456")
+                    .authorizedGrantTypes(
+                            "password", 
+                            "authorization_code",
+                            "implicit",
+                            "refresh_token")
+                    .scopes("read", "write")
+                    .authorities("read", "write")
+                    .accessTokenValiditySeconds(60 * 2)
+                    .refreshTokenValiditySeconds(60 * 60)
+                    .resourceIds(RESOURCE_ID)
+                .and()
+                    .withClient("cliente-admin")
+                    .secret("123abc")
+                    .authorizedGrantTypes("client_credentials")
+                    .scopes("read")
+                    .accessTokenValiditySeconds(60 * 2)
+                    .refreshTokenValiditySeconds(60 * 60)
+                    .resourceIds(RESOURCE_ID)
 
-            .and()
-                .withClient("cliente-admin")
-                .secret("123abc")
-                .authorizedGrantTypes("client_credentials")
-                .scopes("read")
-                .resourceIds(RESOURCE_ID)
-
-            .and()
-                .withClient("cliente-browser")
-                .secret("abc")
-                .authorizedGrantTypes("implicit")
-                .scopes("read");
+                .and()
+                    .withClient("cliente-browser")
+                    .secret("abc")
+                    .authorizedGrantTypes("implicit")
+                    .accessTokenValiditySeconds(60 * 2)
+                    .refreshTokenValiditySeconds(60 * 60)
+                    .scopes("read");
+            }
         }
     }
 }
