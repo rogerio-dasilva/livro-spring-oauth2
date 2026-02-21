@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -31,7 +32,8 @@ public class ConfiguracaoOAuth2 {
                 .authorizeRequests()
                     .anyRequest().authenticated().and()
                 .requestMatchers()
-                    .antMatchers("/api/v2/**");
+                    .antMatchers("/api/v2/**").and()
+                    .cors();
         }
     }
 
@@ -41,12 +43,16 @@ public class ConfiguracaoOAuth2 {
 
         @Autowired
         private AuthenticationManager authenticationManager;
+        
+        @Autowired
+        private UserDetailsService userDetailsService;
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
             // @formatter:off
             endpoints
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService);
             // @formatter:on
         }
 
@@ -55,20 +61,29 @@ public class ConfiguracaoOAuth2 {
             clients.inMemory()
                 .withClient("cliente-app")
                 .secret("123456")
-                .scopes("read", "write")
-                .resourceIds(RESOURCE_ID)
                 .authorizedGrantTypes(
-                    "password", "authorization_code")
+                        "password", 
+                        "authorization_code",
+                        "implicit",
+                        "refresh_token")
+                .scopes("read", "write")
+                .accessTokenValiditySeconds(60 * 2)
+                .refreshTokenValiditySeconds(60 * 60)
+                .resourceIds(RESOURCE_ID)
             .and()
                 .withClient("cliente-admin")
                 .secret("123abc")
                 .authorizedGrantTypes("client_credentials")
                 .scopes("read")
+                .accessTokenValiditySeconds(60 * 2)
+                .refreshTokenValiditySeconds(60 * 60)
                 .resourceIds(RESOURCE_ID)
             .and()
                 .withClient("cliente-browser")
                 .secret("abc")
                 .authorizedGrantTypes("implicit")
+                .accessTokenValiditySeconds(60 * 2)
+                .refreshTokenValiditySeconds(60 * 60)
                 .scopes("read");
         }
     }
