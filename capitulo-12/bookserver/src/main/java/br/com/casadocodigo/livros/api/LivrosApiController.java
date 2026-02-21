@@ -13,6 +13,7 @@ import br.com.casadocodigo.configuracao.seguranca.ResourceOwner;
 import br.com.casadocodigo.livros.Estante;
 import br.com.casadocodigo.usuarios.Usuario;
 import br.com.casadocodigo.usuarios.Usuarios;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
@@ -22,6 +23,7 @@ public class LivrosApiController {
     @Autowired
     private Usuarios usuarios;
 
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('ROLE_USUARIO_COMUM')")
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> livros() {

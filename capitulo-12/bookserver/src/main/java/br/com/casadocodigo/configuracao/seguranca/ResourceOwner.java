@@ -6,6 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.casadocodigo.usuarios.Usuario;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class ResourceOwner implements UserDetails {
 
@@ -19,7 +22,10 @@ public class ResourceOwner implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+            List<SimpleGrantedAuthority> roles = new ArrayList<>();
+            roles.add(new SimpleGrantedAuthority("ROLE_USUARIO_COMUM"));
+            roles.add(new SimpleGrantedAuthority("read"));
+            return roles;
 	}
 
 	public Integer getId() {

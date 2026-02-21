@@ -11,7 +11,9 @@ import lombok.Getter;
 import br.com.casadocodigo.livros.Estante;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Table;
 
+@Table(schema = "bookserver")
 @Entity
 public class Usuario {
 

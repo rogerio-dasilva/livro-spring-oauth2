@@ -12,6 +12,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 
 @Configuration
 public class ConfiguracaoOAuth2 {
@@ -46,13 +48,19 @@ public class ConfiguracaoOAuth2 {
         
         @Autowired
         private UserDetailsService userDetailsService;
+        
+        @Autowired
+        private ClientDetailsService clientDetailsService;
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
             // @formatter:off
+            DefaultOAuth2RequestFactory requestFactory = new DefaultOAuth2RequestFactory(clientDetailsService);
+            requestFactory.setCheckUserScopes(true);
             endpoints
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                .requestFactory(requestFactory);
             // @formatter:on
         }
 
@@ -67,6 +75,7 @@ public class ConfiguracaoOAuth2 {
                         "implicit",
                         "refresh_token")
                 .scopes("read", "write")
+                .authorities("read", "write")
                 .accessTokenValiditySeconds(60 * 2)
                 .refreshTokenValiditySeconds(60 * 60)
                 .resourceIds(RESOURCE_ID)
