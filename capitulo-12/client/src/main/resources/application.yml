@@ -1,0 +1,23 @@
+server:
+  port: 9000
+  servlet:
+    session:
+      # Sets the session timeout to 15 minutes
+      timeout: 5m
+
+spring:
+  http.converters.preferred-json-mapper: jackson
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost/bookserver
+    username: bookserver
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        show_sql: true
+        hbm2ddl:
+          auto: update
