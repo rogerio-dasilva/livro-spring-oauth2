@@ -1,19 +1,30 @@
 server:
   port: 9000
+  servlet:
+    session:
+      # Sets the session timeout to 15 minutes
+      timeout: 5m
 
 spring:
   http.converters.preferred-json-mapper: jackson
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost/clientapp
-    username: clientapp
-    password: 123
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:h2:tcp://172.19.120.70:5002/h2_data_base;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.H2Dialect
         show_sql: true
         hbm2ddl:
           auto: validate
+
+logging:
+  level:
+    root: "info"
+    org.springframework.security.oauth2.client: "debug"
+    org.springframework.web.client: "debug"
+    org.springframework.http.client.support: "debug"

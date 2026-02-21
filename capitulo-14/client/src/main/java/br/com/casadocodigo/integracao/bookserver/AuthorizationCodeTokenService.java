@@ -27,7 +27,7 @@ public class AuthorizationCodeTokenService {
 
         BasicAuthentication clientAuthentication = new BasicAuthentication("cliente-app", "123456");
 
-        String endpointDeAutorizacao = "http://localhost:8080/oauth/authorize";
+        String endpointDeAutorizacao = "http://localhost:8081/oauth/authorize";
 
         // montando a URI
         Map<String, String> parametros = new HashMap<>();
@@ -67,7 +67,7 @@ public class AuthorizationCodeTokenService {
                 getBody(authorizationCode),
                 getHeader(clientAuthentication),
                 HttpMethod.POST,
-                URI.create("http://localhost:8080/oauth/token")
+                URI.create("http://localhost:8081/oauth/token")
         );
 
         ResponseEntity<OAuth2Token> responseEntity = restTemplate.exchange(

@@ -1,10 +1,10 @@
 $(function() {
-    if  (window.livros == undefined) { window.livros = {} };
+    if  (window.livros === undefined) { window.livros = {}; };
 
     livros.getTitulos = function(token, callback) {
 
         $.ajax({
-            url: 'http://localhost:8080/api/v2/livros',
+            url: 'http://localhost:8081/api/v2/livros',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Authorization", "Bearer " + token);
             },
@@ -12,7 +12,7 @@ $(function() {
 
                 $(data).each(function(index, livro) {
 
-                    var $div = $('<div></div>');
+                    var $div = $('<span class="col-sm-12"></span>');
                     $div.text(livro.titulo);
                     callback($div);
 
@@ -23,7 +23,7 @@ $(function() {
             }
         });
 
-    }
+    };
 
 });
 

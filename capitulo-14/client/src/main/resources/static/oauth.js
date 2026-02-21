@@ -1,5 +1,5 @@
 $(function() {
-    if  (window.oauth == undefined) { window.oauth = {} };
+    if  (window.oauth === undefined) { window.oauth = {}; };
 
     oauth.getTokenResponse = function() {
         var fragment = window.location.hash;
@@ -12,6 +12,6 @@ $(function() {
         });
 
         return resposta;
-    }
+    };
 
 });

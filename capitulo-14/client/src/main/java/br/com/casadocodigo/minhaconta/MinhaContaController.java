@@ -5,6 +5,8 @@ import br.com.casadocodigo.integracao.bookserver.UsuarioSemAutorizacaoException;
 import br.com.casadocodigo.configuracao.seguranca.UsuarioLogado;
 import br.com.casadocodigo.usuarios.Usuario;
 import br.com.casadocodigo.usuarios.UsuariosRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/minhaconta")
 public class MinhaContaController {
+    
+    
+    private static final Logger logger = LoggerFactory.getLogger(MinhaContaController.class);
 
     @Autowired
     private BookserverService bookserverService;
@@ -24,14 +29,15 @@ public class MinhaContaController {
 
     @RequestMapping(value = "/principal")
     public ModelAndView principal() {
+        logger.info("### 7");
 
-        Usuario usuario = usuarioLogado();
-        String token = usuario.getAcessoBookserver().getAcessoToken();
+//        Usuario usuario = usuarioLogado();
+//        String token = usuario.getAcessoBookserver().getAcessoToken();
 
         ModelAndView mv = new ModelAndView("minhaconta/principal");
 
         try {
-            mv.addObject("livros", bookserverService.livros(token));
+            mv.addObject("livros", bookserverService.livrosFromCurrentUser());
         } catch (UsuarioSemAutorizacaoException e) {
             mv.addObject("erro", e.getMessage());
         }

@@ -14,32 +14,30 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.casadocodigo.integracao.model.Livro;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 
 @Service
 public class BookserverService {
 
-    public List<Livro> livros(String token) throws UsuarioSemAutorizacaoException {
-        RestTemplate restTemplate = new RestTemplate();
+    private static final Logger logger = LoggerFactory.getLogger(ConfiguracaoResource.class);
+    
+    @Autowired
+    private OAuth2RestTemplate oAuth2RestTemplate;
 
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Authorization", "Bearer " + token);
+    public List<Livro> livrosFromCurrentUser() throws UsuarioSemAutorizacaoException {
 
-        String endpoint = "http://localhost:8080/api/v2/livros";
-
-        RequestEntity<Object> request = new RequestEntity<>(
-            headers,
-            HttpMethod.GET,
-            URI.create(endpoint)
-        );
+        logger.info("### 8");
+        String endpoint = "http://localhost:8081/api/v2/livros";
 
         try {
-            ResponseEntity<Livro[]> resposta = restTemplate.exchange(request, Livro[].class);
-            if (resposta.getStatusCode().is2xxSuccessful()) {
-                return listaFromArray(resposta.getBody());
-            } else {
-                throw new RuntimeException("sem sucesso");
-            }
+            Livro[] livros = oAuth2RestTemplate.getForObject(endpoint, Livro[].class);
+            return listaFromArray(livros);
+
         } catch (HttpClientErrorException e) {
+            System.out.println("erro" + e.getMessage());
             throw new UsuarioSemAutorizacaoException("não foi possível obter os livros do usuário");
         }
 
