@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Embeddable
 public class Credenciais implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Getter
 	private String email;

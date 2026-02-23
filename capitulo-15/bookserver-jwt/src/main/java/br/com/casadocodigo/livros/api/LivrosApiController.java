@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping({"/api/livros", "/api/v2/livros"})
@@ -26,6 +27,7 @@ public class LivrosApiController {
     private Usuarios usuarios;
 
     @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> livros() {
 
