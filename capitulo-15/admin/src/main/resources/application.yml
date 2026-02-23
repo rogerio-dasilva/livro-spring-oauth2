@@ -1,0 +1,11 @@
+server:
+  port: 7000
+  servlet:
+    session:
+      # Sets the session timeout to 15 minutes
+      timeout: 5m
+
+spring:
+  http.converters.preferred-json-mapper: jackson
+  thymeleaf:
+    cache: false
