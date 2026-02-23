@@ -7,11 +7,9 @@ public class TesteJwt {
 
 	public static void main(String[] args) {
 
-		String header = new String(
-			Base64.getEncoder().encode(getHeaderInBytes()));
+		String header = new String(Base64.getEncoder().encode(getHeaderInBytes()));
 
-		String payload = new String(
-			Base64.getEncoder().encode(getPayloadInBytes()));
+		String payload = new String(Base64.getEncoder().encode(getPayloadInBytes()));
 
 		String token =  header + "." + payload + ".";
 
