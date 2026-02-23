@@ -13,9 +13,12 @@ import br.com.casadocodigo.livros.Estante;
 import lombok.Getter;
 
 import java.io.Serializable;
+import javax.persistence.Table;
 
+@Table(schema = "bookserver")
 @Entity
 public class Usuario implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Getter
 	@Id
