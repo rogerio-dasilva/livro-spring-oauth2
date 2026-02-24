@@ -13,7 +13,9 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.persistence.Table;
 
+@Table(name = "AUTENTICACAO_OPENID" , schema = "bookserver")
 @Entity
 public class AutenticacaoOpenid implements Serializable {
 	private static final long serialVersionUID = 1L;
