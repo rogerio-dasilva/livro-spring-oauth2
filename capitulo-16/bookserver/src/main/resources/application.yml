@@ -33,7 +33,7 @@ spring:
 ## configuracoes open id
 ## informações encontradas no document discovery -> https://accounts.google.com/.well-known/openid-configuration
 google:
-    client_id: "826728316932-9hkms9judivmgd11meconaqqkobe316j. apps. googleusercontent.com"
+    client_id: "826728316932-9hkms9judivmgd11meconaqqkobe316j.apps.googleusercontent.com"
     client_secret: "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"
     access_token_uri: "https://oauth2.googleapis.com/token"
     user_authorization_uri: "https://accounts.google.com/o/oauth2/auth"
