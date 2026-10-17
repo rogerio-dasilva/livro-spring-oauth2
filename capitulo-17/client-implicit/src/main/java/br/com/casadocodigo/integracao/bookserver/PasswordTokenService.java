@@ -27,7 +27,7 @@ public class PasswordTokenService {
                 getBody(loginDoUsuario, senhaDoUsuario),
                 getHeader(clientAuthentication),
                 HttpMethod.POST,
-                URI.create("http://localhost:8080/oauth/token")
+                URI.create("http://localhost:8081/oauth/token")
         );
 
         ResponseEntity<OAuth2Token> responseEntity = restTemplate.exchange(

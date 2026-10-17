@@ -17,7 +17,7 @@ public class ImplicitTokenService {
     public String getAuthorizationEndpoint() {
         BasicAuthentication clientAuthentication = new BasicAuthentication("cliente-browser", null);
 
-        String endpointDeAutorizacao = "http://localhost:8080/oauth/authorize";
+        String endpointDeAutorizacao = "http://localhost:8081/oauth/authorize";
 
         // montando a URI
         Map<String, String> parametros = new HashMap<>();

@@ -1,19 +1,23 @@
 server:
   port: 9000
+  servlet:
+    session:
+      # Sets the session timeout to 15 minutes
+      timeout: 5m
 
 spring:
   http.converters.preferred-json-mapper: jackson
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost/clientapp
-    username: clientapp
-    password: 123
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:derby://localhost:1527/mydb02;create=false
+    username: sa
+    password: sa
+    driver-class-name: org.apache.derby.jdbc.ClientDriver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.DerbyTenSevenDialect
         show_sql: true
         hbm2ddl:
           auto: validate

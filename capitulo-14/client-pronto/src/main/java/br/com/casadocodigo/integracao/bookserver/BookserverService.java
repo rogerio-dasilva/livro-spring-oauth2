@@ -17,7 +17,7 @@ public class BookserverService {
 
     public List<Livro> livrosFromCurrentUser() throws UsuarioSemAutorizacaoException {
 
-        String endpoint = "http://localhost:8080/api/v2/livros";
+        String endpoint = "http://localhost:8081/api/v2/livros";
 
         try {
             Livro[] livros = oAuth2RestTemplate.getForObject(endpoint, Livro[].class);

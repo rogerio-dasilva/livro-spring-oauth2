@@ -1,6 +1,7 @@
 package br.com.casadocodigo.usuarios;
 
 import br.com.casadocodigo.configuracao.seguranca.UsuarioLogado;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,10 +34,19 @@ public class CadastroUsuarioController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView registrar(DadosCadastrais dadosCadastrais) {
+        Optional<Usuario> existe = usuariosRepository.findByLogin(dadosCadastrais.getLogin());
+        if(existe.isPresent()){
+             ModelAndView mv = new ModelAndView("usuarios/cadastro");
+             mv.addObject("erro", "Login já cadastrado: " + dadosCadastrais.getLogin());
+             return mv;
+        }
+        
         ModelAndView mv = new ModelAndView("redirect:/minhaconta/principal");
 
+        
         Usuario usuario = new Usuario(dadosCadastrais.getNome(),
                 dadosCadastrais.getLogin(), dadosCadastrais.getSenha());
+        
 
         usuariosRepository.save(usuario);
 

@@ -1,4 +1,4 @@
-server.port: 8080
+server.port: 8081
 
 ## define se vai utilizar a solução onde authorization server e resource server estão juntos ou separados
 ## definir como true, significa que o oauth provider está todo configurado aqui na aplicação bookserver
@@ -12,14 +12,14 @@ oauth:
 ## configurações do datasource do spring
 spring:
   datasource:
-    url: jdbc:mysql://localhost/bookserver
-    username: bookserver
-    password: 1234
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:derby://localhost:1527/mydb01;create=false
+    username: sa
+    password: sa
+    driver-class-name: org.apache.derby.jdbc.ClientDriver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.DerbyTenSevenDialect
         show_sql: true
         hbm2ddl:
-          auto: update
+          auto: validate

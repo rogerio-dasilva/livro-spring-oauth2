@@ -14,7 +14,6 @@ import br.com.casadocodigo.livros.Estante;
 import br.com.casadocodigo.usuarios.Usuario;
 import br.com.casadocodigo.usuarios.Usuarios;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping({"/api/livros", "/api/v2/livros"})

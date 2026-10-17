@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql-bookserver:
     container_name: bookserver_mysql
-    image: mysql:latest
+    image: docker.io/mysql:8.0-debian
     ports:
       - 3306:3306
     environment:

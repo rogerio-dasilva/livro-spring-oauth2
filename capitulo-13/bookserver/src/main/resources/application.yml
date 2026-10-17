@@ -17,20 +17,20 @@ oauth:
 ## multiplas configurações de datasource do spring
 spring:
   ds-bookserver:
-    url: jdbc:h2:tcp://172.19.120.70:5002/h2_data_base;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:derby://localhost:1527/mydb01;create=false
     username: sa
     password: sa
-    driver-class-name: org.h2.Driver
-  ds-oauth:
-    url: jdbc:h2:tcp://172.19.120.70:5004/h2_spring_oauth2;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: sa
-    driver-class-name: org.h2.Driver
+    driver-class-name: org.apache.derby.jdbc.ClientDriver
+#  ds-oauth:
+#    url: jdbc:derby://localhost:1527/mydb03;create=false
+#    username: sa
+#    password: sa
+#    driver-class-name: org.apache.derby.jdbc.ClientDriver
 
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.DerbyTenSevenDialect
         show_sql: true
         hbm2ddl:
           auto: validate

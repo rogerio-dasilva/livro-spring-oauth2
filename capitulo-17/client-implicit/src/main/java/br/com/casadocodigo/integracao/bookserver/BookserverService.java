@@ -24,7 +24,7 @@ public class BookserverService {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("Authorization", "Bearer " + token);
 
-        String endpoint = "http://localhost:8080/api/v2/livros";
+        String endpoint = "http://localhost:8081/api/v2/livros";
 
         RequestEntity<Object> request = new RequestEntity<>(
             headers,

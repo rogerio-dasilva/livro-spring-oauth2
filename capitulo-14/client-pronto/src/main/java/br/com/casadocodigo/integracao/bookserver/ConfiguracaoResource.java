@@ -35,8 +35,8 @@ public class ConfiguracaoResource {
         detailsForBookserver.setTokenName("oauth_token");
         detailsForBookserver.setClientId("cliente-app");
         detailsForBookserver.setClientSecret("123456");
-        detailsForBookserver.setAccessTokenUri("http://localhost:8080/oauth/token");
-        detailsForBookserver.setUserAuthorizationUri("http://localhost:8080/oauth/authorize");
+        detailsForBookserver.setAccessTokenUri("http://localhost:8081/oauth/token");
+        detailsForBookserver.setUserAuthorizationUri("http://localhost:8081/oauth/authorize");
         detailsForBookserver.setScope(Arrays.asList("read", "write"));
 
         detailsForBookserver.setPreEstablishedRedirectUri(("http://localhost:9000/integracao/callback"));
